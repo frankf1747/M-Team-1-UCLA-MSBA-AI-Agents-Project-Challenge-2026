@@ -1,5 +1,16 @@
 from langchain_core.prompts import ChatPromptTemplate
 
+# Authoritative corridor -> SLA tier mapping. Injected so agents never confuse
+# which corridor is life-critical.
+CORRIDOR_FACTS = (
+    "AUTHORITATIVE FACTS (do not contradict): "
+    "C1_I95_NJ_BOS is the Tier-1 LIFE-CRITICAL corridor (NJ -> Boston, 6h SLA). "
+    "C2_NJ_PHL is the Tier-2 standard corridor (NJ -> Philadelphia, 12h SLA). "
+    "'stranded_units' and 'tier1_units_impacted' in the KPIs are units that "
+    "CANNOT be delivered this window. Never claim a corridor is Tier-1 unless "
+    "it is C1_I95_NJ_BOS."
+)
+
 
 PDF_CONTEXT_PROMPT = ChatPromptTemplate.from_messages([
     ("system",
@@ -33,7 +44,7 @@ IMPACT_PROMPT = ChatPromptTemplate.from_messages([
      "You are ImpactAnalysisAgent for SeeWeeS medical logistics. You receive a BASELINE "
      "KPI snapshot and a SCENARIO KPI snapshot computed by a deterministic engine. "
      "Do not invent numbers — only interpret the deltas given. Identify the single binding "
-     "constraint (e.g. reefer trucks) and the most material KPI movements."),
+     "constraint (e.g. reefer trucks) and the most material KPI movements. " + CORRIDOR_FACTS),
     ("user",
      "Scenario: {scenario_label}\n\nBASELINE KPIs:\n{baseline_kpis}\n\n"
      "SCENARIO KPIs:\n{scenario_kpis}\n\n"
@@ -46,12 +57,20 @@ CONTINGENCY_PROMPT = ChatPromptTemplate.from_messages([
      "You are ContingencyPlannerAgent. Propose mitigations grounded ONLY in the SeeWeeS "
      "Playbook section 13 allocation policy: minimize total penalty score, prioritize Tier 1 "
      "and cold-chain units, reallocate scarce temperature-controlled trucks across corridors, "
-     "and defer Tier 2 only when still within SLA. Be concrete and actionable."),
+     "and defer Tier 2 only when still within SLA. Be concrete and actionable. "
+     + CORRIDOR_FACTS +
+     " MANDATORY: if the scenario KPIs show tier1_units_impacted > 0 or stranded "
+     "units that are Tier-1/cold-chain, your section 1 MUST contain a line that "
+     "starts literally with 'ESCALATION:' naming the exact count of stranded "
+     "Tier-1 units and the immediate escalation action. If audit feedback is "
+     "provided, you MUST directly correct every issue it raised — do not repeat "
+     "the previous plan unchanged."),
     ("user",
      "Business context:\n{business_context}\n\nImpact analysis:\n{impact_analysis}\n\n"
      "Scenario KPIs:\n{scenario_kpis}\n\n"
      "Audit feedback from previous attempt (empty on first pass):\n{audit_feedback}\n\n"
-     "Return a numbered contingency plan:\n1) Resource reallocation by corridor/day\n"
+     "Return a numbered contingency plan:\n1) Resource reallocation by corridor/day "
+     "(include the ESCALATION: line here when required)\n"
      "2) Prioritization rules applied\n3) Residual risk + what to monitor\n")
 ])
 

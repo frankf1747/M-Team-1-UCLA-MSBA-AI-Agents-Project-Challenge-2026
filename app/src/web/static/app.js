@@ -114,8 +114,8 @@ function render(d) {
     <div class="card">
       <h2>Analysis &amp; contingency</h2>
       <div class="grid2">
-        <div><div class="muted">Impact analysis</div><p class="prose">${escapeHtml(d.impact_analysis)}</p></div>
-        <div><div class="muted">Contingency plan (post-audit)</div><p class="prose">${escapeHtml(d.contingency_plan)}</p></div>
+        <div><div class="muted">Impact analysis</div><div class="prose">${formatStructured(d.impact_analysis)}</div></div>
+        <div><div class="muted">Contingency plan (post-audit)</div><div class="prose">${formatStructured(d.contingency_plan)}</div></div>
       </div>
       <div class="muted" style="margin-top:14px">Audit result</div>
       <pre>${escapeHtml(d.audit_result)}</pre>
@@ -132,6 +132,33 @@ function render(d) {
   document.getElementById("exportpdf").onclick = () => exportReportPdf(d);
 }
 
+// Turn the LLM's "1) Heading: - bullet - bullet 2) ..." text into
+// structured HTML (headings + bullet lists) instead of one wall of text.
+function formatStructured(raw) {
+  let t = (raw || "").trim();
+  if (!t) return '<p class="muted">(n/a)</p>';
+  t = " " + t;
+  t = t.replace(/\s(\d\))\s/g, "\n@@SEC@@$1 ")   // 1)  2)  3) section markers
+       .replace(/\s-\s+/g, "\n@@BUL@@");          // " - " bullets
+  let html = "", inList = false;
+  for (let line of t.split("\n").map(s => s.trim()).filter(Boolean)) {
+    if (line.startsWith("@@SEC@@")) {
+      if (inList) { html += "</ul>"; inList = false; }
+      html += "<h4>" + escapeHtml(line.replace("@@SEC@@", "")) + "</h4>";
+    } else if (line.startsWith("@@BUL@@")) {
+      if (!inList) { html += "<ul>"; inList = true; }
+      let b = escapeHtml(line.replace("@@BUL@@", ""));
+      if (/^ESCALATION:/i.test(b)) b = "<b class='esc'>" + b + "</b>";
+      html += "<li>" + b + "</li>";
+    } else {
+      if (inList) { html += "</ul>"; inList = false; }
+      html += "<p>" + escapeHtml(line) + "</p>";
+    }
+  }
+  if (inList) html += "</ul>";
+  return html;
+}
+
 function exportReportPdf(d) {
   const sp = d.scenario_kpis.total_penalty_score || 0;
   const bp = d.baseline_kpis.total_penalty_score || 0;
@@ -143,6 +170,9 @@ function exportReportPdf(d) {
       body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
            color:#1c2733;margin:40px;line-height:1.55}
       h1{font-size:20px} h2{font-size:14px;color:#0b7285;margin-top:26px}
+      h4{font-size:13px;color:#0b7285;margin:14px 0 5px}
+      ul{margin:6px 0;padding-left:20px} li{margin:4px 0}
+      .esc{color:#d6453d}
       table{border-collapse:collapse;margin:10px 0;font-size:12px}
       td,th{border:1px solid #d8e0e7;padding:5px 9px;text-align:left}
       .meta{color:#67788a;font-size:12px;margin-bottom:18px}
@@ -158,8 +188,8 @@ function exportReportPdf(d) {
       (${d.audit_compliant ? "compliant" : "NON-compliant"})</div>
     <h2>Executive report</h2>
     <div>${d.report_html || "(no report)"}</div>
-    <h2>Impact analysis</h2><div>${escapeHtml(d.impact_analysis)}</div>
-    <h2>Contingency plan (post-audit)</h2><div>${escapeHtml(d.contingency_plan)}</div>
+    <h2>Impact analysis</h2><div>${formatStructured(d.impact_analysis)}</div>
+    <h2>Contingency plan (post-audit)</h2><div>${formatStructured(d.contingency_plan)}</div>
     <h2>Audit result</h2><pre>${escapeHtml(d.audit_result)}</pre>
     <h2>Excluded shipments (data quality)</h2><pre>${escapeHtml(d.excluded_md)}</pre>
     </body></html>`);
