@@ -17,11 +17,14 @@ def test_demand_spike_scales_units():
     assert len(units) == 12
 
 
-def test_closure_removes_corridor():
+def test_closure_strands_corridor_units():
     base = pd.concat([_units(5, "C1_I95_NJ_BOS"), _units(5, "C2_NJ_PHL")])
     units, _ = apply_scenario(base, ResourcePool(6, 4, 2),
                               ScenarioSpec(closed_corridors=["C2_NJ_PHL"]))
-    assert set(units["corridor_id"]) == {"C1_I95_NJ_BOS"}
+    # rows are kept (demand doesn't vanish) but flagged undeliverable
+    assert len(units) == 10
+    assert units[units["corridor_id"] == "C2_NJ_PHL"]["disrupted"].all()
+    assert not units[units["corridor_id"] == "C1_I95_NJ_BOS"]["disrupted"].any()
 
 
 def test_shortage_reduces_pool_only_where_specified():

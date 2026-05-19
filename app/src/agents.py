@@ -6,12 +6,28 @@ from prompts import (
     IMPACT_PROMPT, CONTINGENCY_PROMPT, AUDIT_PROMPT,
 )
 
-llm = ChatOpenAI(
-    model="gpt-4.1-mini",
-    temperature=0.2,
-    tags=["msba-demo", "multi-agent"],
-    metadata={"repo": "MSBA_AI_Agents_Demo"}
-)
+_llm = None
+
+
+def _get_llm() -> ChatOpenAI:
+    """Lazy singleton so importing this module never requires an API key."""
+    global _llm
+    if _llm is None:
+        _llm = ChatOpenAI(
+            model="gpt-4.1-mini",
+            temperature=0.2,
+            tags=["msba-demo", "multi-agent"],
+            metadata={"repo": "MSBA_AI_Agents_Demo"},
+        )
+    return _llm
+
+
+class _LazyLLM:
+    def invoke(self, *a, **k):
+        return _get_llm().invoke(*a, **k)
+
+
+llm = _LazyLLM()
 
 
 def run_context_agent(snippets: str) -> str:

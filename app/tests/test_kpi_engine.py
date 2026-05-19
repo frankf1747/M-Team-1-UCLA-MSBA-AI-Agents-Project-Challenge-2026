@@ -19,6 +19,17 @@ def test_required_trucks_no_violation():
     assert k["total_penalty_score"] == 0  # 2 reefers available
 
 
+def test_driver_shortage_strands_units():
+    # 11 cold units -> 2 reefer trucks needed -> 2 drivers needed.
+    units = _cold_units(11)
+    pool = ResourcePool(driver=1, truck_standard=4, truck_temp_controlled=2)
+    k = compute_kpis(units, pool)
+    # reefer trucks available (no truck penalty) but only 1 driver for 2 trucks
+    # -> 1 truck undriven -> up to 10 units stranded (Tier1 100 + cold 80).
+    assert k["total_penalty_score"] == 10 * 180
+    assert k["tier1_units_impacted"] == 10
+
+
 def test_reefer_shortage_creates_tier1_cold_penalty():
     units = _cold_units(11)
     pool = ResourcePool(driver=6, truck_standard=4, truck_temp_controlled=1)

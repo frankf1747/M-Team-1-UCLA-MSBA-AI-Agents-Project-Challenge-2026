@@ -1,0 +1,73 @@
+shipment_date,planning_day,is_planning_window,corridor_id,item_id,item_name,unique_item_id,dispatch_location
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10021,Remdesivir 100mg,RMD-2026-0001,Boston-MGH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10022,Insulin Lispro,INS-2026-0002,Boston-BWH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10035,Pembrolizumab,PBR-2026-0003,Boston-DanaFarber
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10021,Remdesivir 100mg,RMD-2026-0004,Boston-MGH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10022,Insulin Lispro,INS-2026-0005,Boston-BWH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10035,Pembrolizumab,PBR-2026-0006,Boston-DanaFarber
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10021,Remdesivir 100mg,RMD-2026-0007,Boston-MGH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10022,Insulin Lispro,INS-2026-0008,Boston-BWH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10035,Pembrolizumab,PBR-2026-0009,Boston-DanaFarber
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10040,Epinephrine Auto-Injector,EPI-2026-0010,Boston-MGH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10050,Heparin Sodium,HEP-2026-0011,Boston-BWH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10070,Albuterol Inhaler,ALB-2026-0012,Boston-DanaFarber
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10040,Epinephrine Auto-Injector,EPI-2026-0013,Boston-MGH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10050,Heparin Sodium,HEP-2026-0014,Boston-BWH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10070,Albuterol Inhaler,ALB-2026-0015,Boston-DanaFarber
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10040,Epinephrine Auto-Injector,EPI-2026-0016,Boston-MGH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10050,Heparin Sodium,HEP-2026-0017,Boston-BWH
+2026-03-02,Day0,1,C1_I95_NJ_BOS,10070,Albuterol Inhaler,ALB-2026-0018,Boston-DanaFarber
+2026-03-02,Day0,1,C2_NJ_PHL,10021,Remdesivir 100mg,RMD-2026-1001,Philadelphia-UPenn
+2026-03-02,Day0,1,C2_NJ_PHL,10022,Insulin Lispro,INS-2026-1002,Philadelphia-CHOP
+2026-03-02,Day0,1,C2_NJ_PHL,10035,Pembrolizumab,PBR-2026-1003,Philadelphia-Jefferson
+2026-03-02,Day0,1,C2_NJ_PHL,10021,Remdesivir 100mg,RMD-2026-1004,Philadelphia-UPenn
+2026-03-02,Day0,1,C2_NJ_PHL,10022,Insulin Lispro,INS-2026-1005,Philadelphia-CHOP
+2026-03-02,Day0,1,C2_NJ_PHL,10035,Pembrolizumab,PBR-2026-1006,Philadelphia-Jefferson
+2026-03-02,Day0,1,C2_NJ_PHL,10021,Remdesivir 100mg,RMD-2026-1007,Philadelphia-UPenn
+2026-03-02,Day0,1,C2_NJ_PHL,10022,Insulin Lispro,INS-2026-1008,Philadelphia-CHOP
+2026-03-02,Day0,1,C2_NJ_PHL,10035,Pembrolizumab,PBR-2026-1009,Philadelphia-Jefferson
+2026-03-02,Day0,1,C2_NJ_PHL,10040,Epinephrine Auto-Injector,EPI-2026-1010,Philadelphia-UPenn
+2026-03-02,Day0,1,C2_NJ_PHL,10050,Heparin Sodium,HEP-2026-1011,Philadelphia-CHOP
+2026-03-02,Day0,1,C2_NJ_PHL,10070,Albuterol Inhaler,ALB-2026-1012,Philadelphia-Jefferson
+2026-03-02,Day0,1,C2_NJ_PHL,10040,Epinephrine Auto-Injector,EPI-2026-1013,Philadelphia-UPenn
+2026-03-02,Day0,1,C2_NJ_PHL,10050,Heparin Sodium,HEP-2026-1014,Philadelphia-CHOP
+2026-03-02,Day0,1,C2_NJ_PHL,10070,Albuterol Inhaler,ALB-2026-1015,Philadelphia-Jefferson
+2026-03-02,Day0,1,C2_NJ_PHL,10040,Epinephrine Auto-Injector,EPI-2026-1016,Philadelphia-UPenn
+2026-03-02,Day0,1,C2_NJ_PHL,10050,Heparin Sodium,HEP-2026-1017,Philadelphia-CHOP
+2026-03-02,Day0,1,C2_NJ_PHL,10070,Albuterol Inhaler,ALB-2026-1018,Philadelphia-Jefferson
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10021,Remdesivir 100mg,RMD-2026-0001,Boston-MGH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10022,Insulin Lispro,INS-2026-0002,Boston-BWH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10035,Pembrolizumab,PBR-2026-0003,Boston-DanaFarber
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10021,Remdesivir 100mg,RMD-2026-0004,Boston-MGH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10022,Insulin Lispro,INS-2026-0005,Boston-BWH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10035,Pembrolizumab,PBR-2026-0006,Boston-DanaFarber
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10021,Remdesivir 100mg,RMD-2026-0007,Boston-MGH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10022,Insulin Lispro,INS-2026-0008,Boston-BWH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10035,Pembrolizumab,PBR-2026-0009,Boston-DanaFarber
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10040,Epinephrine Auto-Injector,EPI-2026-0010,Boston-MGH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10050,Heparin Sodium,HEP-2026-0011,Boston-BWH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10070,Albuterol Inhaler,ALB-2026-0012,Boston-DanaFarber
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10040,Epinephrine Auto-Injector,EPI-2026-0013,Boston-MGH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10050,Heparin Sodium,HEP-2026-0014,Boston-BWH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10070,Albuterol Inhaler,ALB-2026-0015,Boston-DanaFarber
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10040,Epinephrine Auto-Injector,EPI-2026-0016,Boston-MGH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10050,Heparin Sodium,HEP-2026-0017,Boston-BWH
+2026-03-03,Day1,1,C1_I95_NJ_BOS,10070,Albuterol Inhaler,ALB-2026-0018,Boston-DanaFarber
+2026-03-03,Day1,1,C2_NJ_PHL,10021,Remdesivir 100mg,RMD-2026-1001,Philadelphia-UPenn
+2026-03-03,Day1,1,C2_NJ_PHL,10022,Insulin Lispro,INS-2026-1002,Philadelphia-CHOP
+2026-03-03,Day1,1,C2_NJ_PHL,10035,Pembrolizumab,PBR-2026-1003,Philadelphia-Jefferson
+2026-03-03,Day1,1,C2_NJ_PHL,10021,Remdesivir 100mg,RMD-2026-1004,Philadelphia-UPenn
+2026-03-03,Day1,1,C2_NJ_PHL,10022,Insulin Lispro,INS-2026-1005,Philadelphia-CHOP
+2026-03-03,Day1,1,C2_NJ_PHL,10035,Pembrolizumab,PBR-2026-1006,Philadelphia-Jefferson
+2026-03-03,Day1,1,C2_NJ_PHL,10021,Remdesivir 100mg,RMD-2026-1007,Philadelphia-UPenn
+2026-03-03,Day1,1,C2_NJ_PHL,10022,Insulin Lispro,INS-2026-1008,Philadelphia-CHOP
+2026-03-03,Day1,1,C2_NJ_PHL,10035,Pembrolizumab,PBR-2026-1009,Philadelphia-Jefferson
+2026-03-03,Day1,1,C2_NJ_PHL,10040,Epinephrine Auto-Injector,EPI-2026-1010,Philadelphia-UPenn
+2026-03-03,Day1,1,C2_NJ_PHL,10050,Heparin Sodium,HEP-2026-1011,Philadelphia-CHOP
+2026-03-03,Day1,1,C2_NJ_PHL,10070,Albuterol Inhaler,ALB-2026-1012,Philadelphia-Jefferson
+2026-03-03,Day1,1,C2_NJ_PHL,10040,Epinephrine Auto-Injector,EPI-2026-1013,Philadelphia-UPenn
+2026-03-03,Day1,1,C2_NJ_PHL,10050,Heparin Sodium,HEP-2026-1014,Philadelphia-CHOP
+2026-03-03,Day1,1,C2_NJ_PHL,10070,Albuterol Inhaler,ALB-2026-1015,Philadelphia-Jefferson
+2026-03-03,Day1,1,C2_NJ_PHL,10040,Epinephrine Auto-Injector,EPI-2026-1016,Philadelphia-UPenn
+2026-03-03,Day1,1,C2_NJ_PHL,10050,Heparin Sodium,HEP-2026-1017,Philadelphia-CHOP
+2026-03-03,Day1,1,C2_NJ_PHL,10070,Albuterol Inhaler,ALB-2026-1018,Philadelphia-Jefferson

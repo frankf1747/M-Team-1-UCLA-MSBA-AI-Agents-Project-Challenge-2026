@@ -40,9 +40,14 @@ class ScenarioSpec:
 def apply_scenario(units: pd.DataFrame, pool: ResourcePool,
                    spec: ScenarioSpec) -> Tuple[pd.DataFrame, ResourcePool]:
     df = units.copy()
+    if "disrupted" not in df.columns:
+        df["disrupted"] = False
 
+    # Corridor/warehouse closure: shipments do NOT vanish — they cannot be
+    # dispatched on their lane this window, so they are stranded (playbook 12
+    # exception handling) and penalized as undeliverable.
     if spec.closed_corridors:
-        df = df[~df["corridor_id"].isin(spec.closed_corridors)]
+        df.loc[df["corridor_id"].isin(spec.closed_corridors), "disrupted"] = True
 
     if spec.demand_spike_pct and len(df):
         extra = floor(len(df) * spec.demand_spike_pct / 100.0)
@@ -51,6 +56,14 @@ def apply_scenario(units: pd.DataFrame, pool: ResourcePool,
                 [df, df.sample(extra, replace=True, random_state=42)],
                 ignore_index=True,
             )
+
+    # Weather override -> playbook 5.2 travel-time buffer (extends effective
+    # transit, so each truck carries fewer units before SLA risk).
+    wx_buffer = {0: 1.0, 1: 1.10, 2: 1.25, 3: 1.40}
+    if "wx_buffer" not in df.columns:
+        df["wx_buffer"] = 1.0
+    for corridor, score in (spec.weather_override or {}).items():
+        df.loc[df["corridor_id"] == corridor, "wx_buffer"] = wx_buffer.get(int(score), 1.0)
 
     new_pool = ResourcePool(
         driver=spec.driver if spec.driver is not None else pool.driver,
