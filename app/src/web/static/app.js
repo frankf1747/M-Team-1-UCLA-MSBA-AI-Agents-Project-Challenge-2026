@@ -121,11 +121,51 @@ function render(d) {
       <pre>${escapeHtml(d.audit_result)}</pre>
     </div>
     <div class="card">
-      <h2>Executive report</h2>
-      <iframe sandbox srcdoc="${escapeAttr(d.report_html)}"></iframe>
+      <h2>Executive report
+        <button id="exportpdf" class="btn-export">Export to PDF</button>
+      </h2>
+      <iframe id="reportframe" sandbox srcdoc="${escapeAttr(d.report_html)}"></iframe>
       <div class="muted" style="margin-top:10px">Excluded shipments (data quality)</div>
       <pre>${escapeHtml(d.excluded_md)}</pre>
     </div>`;
+
+  document.getElementById("exportpdf").onclick = () => exportReportPdf(d);
+}
+
+function exportReportPdf(d) {
+  const sp = d.scenario_kpis.total_penalty_score || 0;
+  const bp = d.baseline_kpis.total_penalty_score || 0;
+  const w = window.open("", "_blank");
+  if (!w) { alert("Pop-up blocked — allow pop-ups to export."); return; }
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8">
+    <title>SeeWeeS What-if Report</title>
+    <style>
+      body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+           color:#1c2733;margin:40px;line-height:1.55}
+      h1{font-size:20px} h2{font-size:14px;color:#0b7285;margin-top:26px}
+      table{border-collapse:collapse;margin:10px 0;font-size:12px}
+      td,th{border:1px solid #d8e0e7;padding:5px 9px;text-align:left}
+      .meta{color:#67788a;font-size:12px;margin-bottom:18px}
+      pre{white-space:pre-wrap;font-size:12px;background:#f7f9fa;
+          border:1px solid #e3e9ef;padding:10px;border-radius:6px}
+      @media print{button{display:none}}
+    </style></head><body>
+    <h1>SeeWeeS — What-if Scenario Report</h1>
+    <div class="meta">Generated ${new Date().toLocaleString()} ·
+      Baseline penalty ${bp} → Scenario penalty ${sp}
+      (Δ ${sp - bp >= 0 ? "+" : ""}${sp - bp}) ·
+      Audit iterations ${d.audit_iterations}
+      (${d.audit_compliant ? "compliant" : "NON-compliant"})</div>
+    <h2>Executive report</h2>
+    <div>${d.report_html || "(no report)"}</div>
+    <h2>Impact analysis</h2><div>${escapeHtml(d.impact_analysis)}</div>
+    <h2>Contingency plan (post-audit)</h2><div>${escapeHtml(d.contingency_plan)}</div>
+    <h2>Audit result</h2><pre>${escapeHtml(d.audit_result)}</pre>
+    <h2>Excluded shipments (data quality)</h2><pre>${escapeHtml(d.excluded_md)}</pre>
+    </body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 350);
 }
 
 function escapeHtml(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
