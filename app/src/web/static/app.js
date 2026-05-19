@@ -38,28 +38,38 @@ function buildFlow() {
   });
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+let _auditCount = 0;
+let _prevNode = null;
 
-async function animateTrace(trace) {
-  buildFlow();
+function onNodeEvent(node, summary) {
   const handoff = $("handoff");
-  const loops = trace.filter(e => e.node === "audit").length;
-  for (const ev of trace) {
-    const el = $("n_" + ev.node);
-    PIPELINE.forEach(n => { const x = $("n_" + n); if (x) x.classList.remove("active"); });
-    if (el) {
-      el.classList.add("active");
-      el.classList.remove("done");
-    }
-    let loopTag = "";
-    if (ev.node === "contingency_planner" && trace.filter(e => e.node === "contingency_planner").length > 1)
-      loopTag = `<span class="loopbadge">audit loop ×${loops}</span>`;
-    handoff.innerHTML = `<b>${ev.node}</b> — ${ev.summary || ""}<br>` +
-      `<span class="muted">${HANDOFF[ev.node] || ""}</span>${loopTag}`;
-    await sleep(420);
-    if (el) { el.classList.remove("active"); el.classList.add("done"); }
+  if (node === "audit") _auditCount++;
+  if (_prevNode && _prevNode !== node) {
+    const p = $("n_" + _prevNode);
+    if (p) { p.classList.remove("active"); p.classList.add("done"); }
   }
-  handoff.innerHTML += ` &nbsp;✓ complete`;
+  const el = $("n_" + node);
+  if (el) {
+    // re-entering a node (audit loop) -> brief flash so the motion is visible
+    el.classList.remove("done");
+    el.classList.remove("active");
+    void el.offsetWidth;
+    el.classList.add("active");
+  }
+  let loopTag = "";
+  if (_auditCount > 1)
+    loopTag = `<span class="loopbadge">audit loop ×${_auditCount}</span>`;
+  handoff.innerHTML = `<b>${node}</b> — ${summary || ""}<br>` +
+    `<span class="muted">${HANDOFF[node] || ""}</span>${loopTag}`;
+  _prevNode = node;
+}
+
+function finishFlow() {
+  PIPELINE.forEach(n => {
+    const x = $("n_" + n);
+    if (x) { x.classList.remove("active"); x.classList.add("done"); }
+  });
+  $("handoff").innerHTML += " &nbsp;✓ complete";
 }
 
 function deltaClass(d) { return d > 0 ? "up" : d < 0 ? "down" : "flat"; }
@@ -121,34 +131,42 @@ function render(d) {
 function escapeHtml(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 function escapeAttr(s){return (s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;");}
 
-$("run").onclick = async () => {
+$("run").onclick = () => {
   const btn = $("run");
-  btn.disabled = true; $("status").textContent = "Running multi-agent pipeline…";
-  const closed = $("closure").value ? [$("closure").value] : [];
-  const payload = {
+  btn.disabled = true;
+  $("status").textContent = "Agents working — watch the hand-off…";
+  buildFlow();
+  _auditCount = 0; _prevNode = null;
+  $("handoff").textContent = "";
+  $("output").innerHTML = '<div class="card empty">Running…</div>';
+
+  const q = new URLSearchParams({
     demand_spike_pct: +$("demand").value,
-    closed_corridors: closed,
+    closed: $("closure").value || "",
     driver: +$("driver").value,
     truck_standard: +$("std").value,
     truck_temp_controlled: +$("reefer").value,
-    weather_corridor: $("wxc").value,
+    weather_corridor: $("wxc").value || "",
     weather_score: +$("wxs").value,
-    label: "Custom scenario",
-  };
-  try {
-    const res = await fetch("/api/run", {
-      method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
+  });
+  const es = new EventSource("/api/run/stream?" + q.toString());
+
+  es.addEventListener("node", e => {
+    const d = JSON.parse(e.data);
+    onNodeEvent(d.node, d.summary);
+  });
+  es.addEventListener("done", e => {
+    es.close();
+    finishFlow();
     $("status").textContent = "";
-    await animateTrace(data.cowork_trace);
-    render(data);
-  } catch (e) {
-    $("status").textContent = "Error: " + e;
-  } finally {
+    render(JSON.parse(e.data));
     btn.disabled = false;
-  }
+  });
+  es.onerror = () => {
+    es.close();
+    $("status").textContent = "Connection error — see server log.";
+    btn.disabled = false;
+  };
 };
 
 buildFlow();

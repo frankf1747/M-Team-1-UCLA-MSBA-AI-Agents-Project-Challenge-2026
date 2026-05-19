@@ -87,7 +87,7 @@ def run_report_agent(
     contingency_plan: str,
     audit_result: str,
 ) -> str:
-    return llm.invoke(REPORT_PROMPT.format_messages(
+    html = llm.invoke(REPORT_PROMPT.format_messages(
         scenario_label=scenario_label,
         business_context=business_context,
         baseline_kpis=baseline_kpis,
@@ -97,3 +97,14 @@ def run_report_agent(
         contingency_plan=contingency_plan,
         audit_result=audit_result,
     )).content
+    return _strip_code_fences(html)
+
+
+def _strip_code_fences(text: str) -> str:
+    """LLMs often wrap HTML in ```html ... ``` fences which won't render."""
+    t = (text or "").strip()
+    if t.startswith("```"):
+        t = t.split("\n", 1)[1] if "\n" in t else t[3:]
+        if t.rstrip().endswith("```"):
+            t = t.rstrip()[:-3]
+    return t.strip()

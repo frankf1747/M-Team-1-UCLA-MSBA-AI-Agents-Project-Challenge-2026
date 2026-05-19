@@ -39,7 +39,10 @@ def build_rows():
             for pool, n in ((COLD, COLD_PER_CELL), (WARM, WARM_PER_CELL)):
                 for i in range(n):
                     iid, name, pref = pool[i % len(pool)]
-                    suffix = "0" if corridor.startswith("C1") else "1"
+                    # corridor digit + day digit so Day0/Day1 IDs never collide
+                    cdig = "0" if corridor.startswith("C1") else "1"
+                    ddig = "0" if day == "Day0" else "1"
+                    suffix = f"{cdig}{ddig}"
                     rows.append({
                         "shipment_date": date,
                         "planning_day": day,

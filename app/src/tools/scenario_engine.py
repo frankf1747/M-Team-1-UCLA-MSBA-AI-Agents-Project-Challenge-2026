@@ -43,12 +43,8 @@ def apply_scenario(units: pd.DataFrame, pool: ResourcePool,
     if "disrupted" not in df.columns:
         df["disrupted"] = False
 
-    # Corridor/warehouse closure: shipments do NOT vanish — they cannot be
-    # dispatched on their lane this window, so they are stranded (playbook 12
-    # exception handling) and penalized as undeliverable.
-    if spec.closed_corridors:
-        df.loc[df["corridor_id"].isin(spec.closed_corridors), "disrupted"] = True
-
+    # Demand spike first: scale real dispatchable demand before any closure
+    # so the extra volume is genuine new demand, not resampled stranded rows.
     if spec.demand_spike_pct and len(df):
         extra = floor(len(df) * spec.demand_spike_pct / 100.0)
         if extra > 0:
@@ -56,6 +52,12 @@ def apply_scenario(units: pd.DataFrame, pool: ResourcePool,
                 [df, df.sample(extra, replace=True, random_state=42)],
                 ignore_index=True,
             )
+
+    # Corridor/warehouse closure: shipments do NOT vanish — they cannot be
+    # dispatched on their lane this window, so they are stranded (playbook 12
+    # exception handling) and penalized as undeliverable.
+    if spec.closed_corridors:
+        df.loc[df["corridor_id"].isin(spec.closed_corridors), "disrupted"] = True
 
     # Weather override -> playbook 5.2 travel-time buffer (extends effective
     # transit, so each truck carries fewer units before SLA risk).
