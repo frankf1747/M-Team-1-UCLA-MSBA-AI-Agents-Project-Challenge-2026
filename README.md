@@ -19,7 +19,7 @@ executive-ready contingency plan.
 ├── README.md                     ← you are here (deployment guide)
 ├── docs/superpowers/             ← design spec + implementation plan
 ├── report/
-│   └── Technical_Business_Report.md   ← graded business & technical write-up
+│   └── Technical_Business_Report.docx   ← graded business & technical write-up
 └── app/
     ├── README.md                 ← app run notes
     ├── requirements.txt  .env.example
@@ -114,4 +114,4 @@ and the audit loop.
 
 - Design spec: `docs/superpowers/specs/2026-05-19-whatif-scenario-simulation-design.md`
 - Implementation plan: `docs/superpowers/plans/2026-05-19-whatif-scenario-simulation.md`
-- **Business & technical report:** `report/Technical_Business_Report.md`
+- **Business & technical report:** `report/Technical_Business_Report.docx`
