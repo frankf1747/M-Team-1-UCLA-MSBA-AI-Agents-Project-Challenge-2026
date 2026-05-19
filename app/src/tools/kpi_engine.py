@@ -41,6 +41,8 @@ def compute_kpis(units: pd.DataFrame, pool: ResourcePool) -> Dict[str, Any]:
         "tier1_units_impacted": 0,
         "total_units": int(len(units)),
         "totals": {},
+        "stranded_units": 0,
+        "stranded_breakdown": [],
     }
     if units.empty:
         return out
@@ -62,6 +64,19 @@ def compute_kpis(units: pd.DataFrame, pool: ResourcePool) -> Dict[str, Any]:
         if tier == 1:
             t1_impacted += 1
     out["stranded_units"] = int(len(stranded))
+    # Explicit corridor/tier attribution so downstream agents never mislabel
+    # which corridor/tier the stranded units belong to.
+    breakdown = []
+    if not stranded.empty:
+        for cid, sdf in stranded.groupby("corridor_id"):
+            breakdown.append({
+                "corridor_id": str(cid),
+                "tier1_units_stranded": int((sdf["sla_tier"] == 1).sum()),
+                "tier2_units_stranded": int((sdf["sla_tier"] == 2).sum()),
+                "cold_chain_units_stranded": int(
+                    sdf["temp_control"].isin(COLD_FLAGS).sum()),
+            })
+    out["stranded_breakdown"] = breakdown
 
     units = units[units["disrupted"] != True]  # noqa: E712
     if units.empty:

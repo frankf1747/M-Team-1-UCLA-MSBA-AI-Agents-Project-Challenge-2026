@@ -8,7 +8,13 @@ CORRIDOR_FACTS = (
     "C2_NJ_PHL is the Tier-2 standard corridor (NJ -> Philadelphia, 12h SLA). "
     "'stranded_units' and 'tier1_units_impacted' in the KPIs are units that "
     "CANNOT be delivered this window. Never claim a corridor is Tier-1 unless "
-    "it is C1_I95_NJ_BOS."
+    "it is C1_I95_NJ_BOS. "
+    "The field scenario_kpis['stranded_breakdown'] is the AUTHORITATIVE list of "
+    "exactly which corridor and tier the stranded units belong to — you MUST "
+    "use those corridor_id and tier values verbatim and MUST NOT relabel a "
+    "stranded Tier-1 unit as Tier-2 (or vice versa) or move it to another "
+    "corridor. If stranded_breakdown shows tier1_units_stranded > 0, that is a "
+    "Tier-1 stranding event and requires Tier-1 escalation."
 )
 
 
@@ -80,7 +86,12 @@ AUDIT_PROMPT = ChatPromptTemplate.from_messages([
      "SeeWeeS Playbook: Tier 1 = life-critical 6h SLA, Tier 2 = 12h; cold-chain items MUST "
      "use temperature-controlled trucks; weather risk_score 3 MUST trigger escalation. "
      "A plan that strands Tier 1 or cold-chain units without an explicit escalation is "
-     "NON-COMPLIANT. End your reply with EXACTLY one line: 'COMPLIANT: yes' or "
+     "NON-COMPLIANT. " + CORRIDOR_FACTS +
+     " Judge the plan against scenario_kpis['stranded_breakdown'], NOT against "
+     "the plan's own tier labels: if stranded_breakdown shows "
+     "tier1_units_stranded > 0 but the plan claims there are no stranded Tier-1 "
+     "units or only escalates Tier-2, that is NON-COMPLIANT. "
+     "End your reply with EXACTLY one line: 'COMPLIANT: yes' or "
      "'COMPLIANT: no'."),
     ("user",
      "Business context:\n{business_context}\n\nScenario KPIs:\n{scenario_kpis}\n\n"
