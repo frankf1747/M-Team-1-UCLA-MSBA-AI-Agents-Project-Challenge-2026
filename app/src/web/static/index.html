@@ -96,12 +96,12 @@
   <div class="card">
     <h2>Scenario builder</h2>
     <label>Demand spike
-      <span class="hint" title="Inflates shipment volume by this %. e.g. 35% = 35% more units to move in the 48h window — stress-tests fleet capacity.">ⓘ</span>
+      <span class="hint" title="Inflates shipment volume by this %. e.g. 35% = 35% more units to move in the 48h window — stress-tests fleet capacity.">i</span>
       <span class="rangeval" id="demandv">0%</span></label>
     <input type="range" id="demand" min="0" max="100" step="5" value="0">
 
     <label>Close a corridor / warehouse
-      <span class="hint" title="Shuts that lane: its shipments can't dispatch and become stranded (penalized). C1 = Tier-1 Boston (6h SLA), C2 = Tier-2 Philadelphia (12h).">ⓘ</span></label>
+      <span class="hint" title="Shuts that lane: its shipments can't dispatch and become stranded (penalized). C1 = Tier-1 Boston (6h SLA), C2 = Tier-2 Philadelphia (12h).">i</span></label>
     <select id="closure">
       <option value="">(none)</option>
       <option value="C1_I95_NJ_BOS">C1 — NJ → Boston (I-95)</option>
@@ -109,24 +109,24 @@
     </select>
 
     <label>Drivers / day
-      <span class="hint" title="Shared driver pool per day. Each truck needs one driver — too few drivers strands units even if trucks are available.">ⓘ</span></label>
+      <span class="hint" title="Shared driver pool per day. Each truck needs one driver — too few drivers strands units even if trucks are available.">i</span></label>
     <input type="number" id="driver" value="6" min="0" max="20">
     <label>Standard trucks / day
-      <span class="hint" title="Room-temperature truck fleet per day. Capacity ~10 units each (+10% packing buffer).">ⓘ</span></label>
+      <span class="hint" title="Room-temperature truck fleet per day. Capacity ~10 units each (+10% packing buffer).">i</span></label>
     <input type="number" id="std" value="4" min="0" max="20">
     <label>Temp-controlled trucks / day
-      <span class="hint" title="Reefer fleet for cold-chain medicine (e.g. insulin, biologics). Usually the binding constraint — lower it to simulate a reefer shortage.">ⓘ</span></label>
+      <span class="hint" title="Reefer fleet for cold-chain medicine (e.g. insulin, biologics). Usually the binding constraint — lower it to simulate a reefer shortage.">i</span></label>
     <input type="number" id="reefer" value="2" min="0" max="20">
 
     <label>Weather override — corridor
-      <span class="hint" title="Pick a corridor to force a weather risk on, or (none) for normal forecast logic.">ⓘ</span></label>
+      <span class="hint" title="Pick a corridor to force a weather risk on, or (none) for normal forecast logic.">i</span></label>
     <select id="wxc">
       <option value="">(none)</option>
       <option value="C1_I95_NJ_BOS">C1 — I-95</option>
       <option value="C2_NJ_PHL">C2 — Philadelphia</option>
     </select>
     <label>Forced weather risk score
-      <span class="hint" title="Severity 0–3 for the chosen corridor: 0 none · 1 = +10% travel buffer · 2 = +25% · 3 = +40% + escalation. Higher = less effective truck capacity on that lane.">ⓘ</span>
+      <span class="hint" title="Severity 0–3 for the chosen corridor: 0 none · 1 = +10% travel buffer · 2 = +25% · 3 = +40% + escalation. Higher = less effective truck capacity on that lane.">i</span>
       <span class="rangeval" id="wxv">0</span></label>
     <input type="range" id="wxs" min="0" max="3" step="1" value="0">
 
