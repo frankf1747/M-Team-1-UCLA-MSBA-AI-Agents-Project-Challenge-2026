@@ -39,6 +39,7 @@
         padding:8px 10px;border-radius:7px;box-shadow:0 4px 14px rgba(0,0,0,.18);
         opacity:0;visibility:hidden;transition:opacity .08s;z-index:50;pointer-events:none}
   .hint:hover::after{opacity:1;visibility:visible}
+  @media print{ .hint{display:none} }
   input[type=range]{width:100%}
   select,input[type=number]{width:100%;padding:8px 10px;border:1px solid var(--line);
         border-radius:7px;font-size:13px;background:#fff;color:var(--ink)}

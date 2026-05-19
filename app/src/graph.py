@@ -106,6 +106,7 @@ def node_disruption_engine(state: AppState) -> AppState:
     s_units, s_pool = apply_scenario(units, pool, spec)
     kpis = compute_kpis(s_units, s_pool)
     return {"scenario_kpis": kpis,
+            "scenario_summary": spec.describe(s_pool),
             "cowork_trace": _trace(state, "disruption_engine",
                                    f"Scenario penalty={kpis['total_penalty_score']} "
                                    f"({len(s_units)} units)")}
@@ -113,7 +114,8 @@ def node_disruption_engine(state: AppState) -> AppState:
 
 def node_impact_analysis(state: AppState) -> AppState:
     spec = ScenarioSpec(**state["_spec"])
-    txt = run_impact_agent(spec.label, state["baseline_kpis"], state["scenario_kpis"])
+    txt = run_impact_agent(spec.label, state["baseline_kpis"], state["scenario_kpis"],
+                           scenario_summary=state.get("scenario_summary", ""))
     return {"impact_analysis": txt,
             "cowork_trace": _trace(state, "impact_analysis",
                                    "Quantified baseline vs scenario deltas")}
@@ -126,6 +128,7 @@ def node_contingency_planner(state: AppState) -> AppState:
     plan = run_contingency_agent(
         state.get("business_context", ""), state.get("impact_analysis", ""),
         state["scenario_kpis"], audit_feedback=feedback,
+        scenario_summary=state.get("scenario_summary", ""),
     )
     it = state.get("audit_iterations", 0)
     return {"contingency_plan": plan,
@@ -137,6 +140,7 @@ def node_audit(state: AppState) -> AppState:
     text, compliant = run_audit_agent(
         state.get("business_context", ""), state["contingency_plan"],
         state["scenario_kpis"],
+        scenario_summary=state.get("scenario_summary", ""),
     )
     iters = state.get("audit_iterations", 0) + 1
     verdict = "COMPLIANT" if compliant else "NON-COMPLIANT -> loop back"

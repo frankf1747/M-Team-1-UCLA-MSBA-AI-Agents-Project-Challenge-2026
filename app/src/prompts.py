@@ -52,10 +52,10 @@ IMPACT_PROMPT = ChatPromptTemplate.from_messages([
      "Do not invent numbers — only interpret the deltas given. Identify the single binding "
      "constraint (e.g. reefer trucks) and the most material KPI movements. " + CORRIDOR_FACTS),
     ("user",
-     "Scenario: {scenario_label}\n\nBASELINE KPIs:\n{baseline_kpis}\n\n"
-     "SCENARIO KPIs:\n{scenario_kpis}\n\n"
+     "Scenario: {scenario_label}\n\nDISRUPTION APPLIED:\n{scenario_summary}\n\n"
+     "BASELINE KPIs:\n{baseline_kpis}\n\nSCENARIO KPIs:\n{scenario_kpis}\n\n"
      "Return:\n- Top 3 KPI movements (with the numbers)\n- The binding constraint\n"
-     "- Root-cause explanation in 3-4 sentences\n")
+     "- Root-cause explanation in 3-4 sentences (reflect the disruption above)\n")
 ])
 
 CONTINGENCY_PROMPT = ChatPromptTemplate.from_messages([
@@ -70,9 +70,13 @@ CONTINGENCY_PROMPT = ChatPromptTemplate.from_messages([
      "starts literally with 'ESCALATION:' naming the exact count of stranded "
      "Tier-1 units and the immediate escalation action. If audit feedback is "
      "provided, you MUST directly correct every issue it raised — do not repeat "
-     "the previous plan unchanged."),
+     "the previous plan unchanged. "
+     "Obey the DISRUPTION APPLIED section absolutely: never propose dispatching "
+     "on a closed corridor, and never propose more drivers/trucks than the HARD "
+     "RESOURCE CEILING — reallocation only moves the existing fixed pool."),
     ("user",
-     "Business context:\n{business_context}\n\nImpact analysis:\n{impact_analysis}\n\n"
+     "Business context:\n{business_context}\n\nDISRUPTION APPLIED:\n{scenario_summary}\n\n"
+     "Impact analysis:\n{impact_analysis}\n\n"
      "Scenario KPIs:\n{scenario_kpis}\n\n"
      "Audit feedback from previous attempt (empty on first pass):\n{audit_feedback}\n\n"
      "Return a numbered contingency plan:\n1) Resource reallocation by corridor/day "
@@ -91,10 +95,14 @@ AUDIT_PROMPT = ChatPromptTemplate.from_messages([
      "the plan's own tier labels: if stranded_breakdown shows "
      "tier1_units_stranded > 0 but the plan claims there are no stranded Tier-1 "
      "units or only escalates Tier-2, that is NON-COMPLIANT. "
+     "ALSO NON-COMPLIANT (operationally infeasible): the plan proposes "
+     "dispatching trucks on a corridor listed as CLOSED in DISRUPTION APPLIED, "
+     "or proposes more drivers/trucks than the HARD RESOURCE CEILING. "
      "End your reply with EXACTLY one line: 'COMPLIANT: yes' or "
      "'COMPLIANT: no'."),
     ("user",
-     "Business context:\n{business_context}\n\nScenario KPIs:\n{scenario_kpis}\n\n"
+     "Business context:\n{business_context}\n\nDISRUPTION APPLIED:\n{scenario_summary}\n\n"
+     "Scenario KPIs:\n{scenario_kpis}\n\n"
      "Proposed contingency plan:\n{contingency_plan}\n\n"
      "List any rule violations, then the COMPLIANT line.")
 ])

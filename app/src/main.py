@@ -32,7 +32,7 @@ def _install_offline_stubs() -> None:
 
     graph.PdfRag = _FakeRag
     graph.run_context_agent = lambda *_: "[offline] Playbook rules loaded (stub)."
-    graph.run_impact_agent = lambda label, b, s: (
+    graph.run_impact_agent = lambda label, b, s, **k: (
         f"[offline] Penalty moved {b.get('total_penalty_score')} -> "
         f"{s.get('total_penalty_score')} for scenario '{label}'.")
     graph.run_contingency_agent = lambda *a, **k: (

@@ -22,6 +22,8 @@ class AppState(TypedDict, total=False):
     # weather (kept for compatibility / storm override)
     weather_risk: Dict[str, Any]
 
+    scenario_summary: str
+
     # what-if agent outputs
     impact_analysis: str
     contingency_plan: str

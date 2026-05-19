@@ -46,9 +46,11 @@ def run_planner_agent(business_context: str, ops_insights: str, weather_risk: Di
     )).content
 
 def run_impact_agent(scenario_label: str, baseline_kpis: Dict[str, Any],
-                     scenario_kpis: Dict[str, Any]) -> str:
+                     scenario_kpis: Dict[str, Any],
+                     scenario_summary: str = "") -> str:
     return llm.invoke(IMPACT_PROMPT.format_messages(
         scenario_label=scenario_label,
+        scenario_summary=scenario_summary or "(none)",
         baseline_kpis=baseline_kpis,
         scenario_kpis=scenario_kpis,
     )).content
@@ -56,9 +58,11 @@ def run_impact_agent(scenario_label: str, baseline_kpis: Dict[str, Any],
 
 def run_contingency_agent(business_context: str, impact_analysis: str,
                           scenario_kpis: Dict[str, Any],
-                          audit_feedback: str = "") -> str:
+                          audit_feedback: str = "",
+                          scenario_summary: str = "") -> str:
     return llm.invoke(CONTINGENCY_PROMPT.format_messages(
         business_context=business_context,
+        scenario_summary=scenario_summary or "(none)",
         impact_analysis=impact_analysis,
         scenario_kpis=scenario_kpis,
         audit_feedback=audit_feedback or "(none)",
@@ -66,9 +70,11 @@ def run_contingency_agent(business_context: str, impact_analysis: str,
 
 
 def run_audit_agent(business_context: str, contingency_plan: str,
-                    scenario_kpis: Dict[str, Any]) -> tuple[str, bool]:
+                    scenario_kpis: Dict[str, Any],
+                    scenario_summary: str = "") -> tuple[str, bool]:
     text = llm.invoke(AUDIT_PROMPT.format_messages(
         business_context=business_context,
+        scenario_summary=scenario_summary or "(none)",
         contingency_plan=contingency_plan,
         scenario_kpis=scenario_kpis,
     )).content

@@ -36,6 +36,32 @@ class ScenarioSpec:
                 and self.driver is None and self.truck_standard is None
                 and self.truck_temp_controlled is None and not self.weather_override)
 
+    def describe(self, pool: "ResourcePool") -> str:
+        """Human-readable disruption + hard resource ceiling for the agents."""
+        parts = []
+        if self.closed_corridors:
+            parts.append(
+                "CLOSED corridor(s): " + ", ".join(self.closed_corridors) +
+                ". A closed corridor's lane is UNAVAILABLE — its units cannot be "
+                "dispatched on that corridor at all. Do NOT propose sending trucks "
+                "down a closed corridor; the only valid mitigations are emergency/"
+                "alternative carriers, rerouting via an open corridor, or explicit "
+                "escalation.")
+        if self.demand_spike_pct:
+            parts.append(f"Demand spike: +{self.demand_spike_pct:g}% shipment volume.")
+        if self.weather_override:
+            parts.append("Weather override: " + ", ".join(
+                f"{c}=risk{ s}" for c, s in self.weather_override.items()))
+        if not parts:
+            parts.append("No disruption (baseline).")
+        ceiling = (
+            f" HARD RESOURCE CEILING for this scenario (the ENTIRE shared pool — "
+            f"never propose more than these): drivers={pool.driver}, "
+            f"standard_trucks={pool.truck_standard}, "
+            f"reefer_trucks={pool.truck_temp_controlled}. Reallocation moves trucks "
+            f"WITHIN this fixed pool; it cannot create new trucks.")
+        return " ".join(parts) + ceiling
+
 
 def apply_scenario(units: pd.DataFrame, pool: ResourcePool,
                    spec: ScenarioSpec) -> Tuple[pd.DataFrame, ResourcePool]:
