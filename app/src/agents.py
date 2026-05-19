@@ -1,7 +1,10 @@
 from __future__ import annotations
 from typing import Dict, Any
 from langchain_openai import ChatOpenAI
-from prompts import PDF_CONTEXT_PROMPT, OPS_ANALYSIS_PROMPT, PLANNER_PROMPT, REPORT_PROMPT
+from prompts import (
+    PDF_CONTEXT_PROMPT, OPS_ANALYSIS_PROMPT, PLANNER_PROMPT, REPORT_PROMPT,
+    IMPACT_PROMPT, CONTINGENCY_PROMPT, AUDIT_PROMPT,
+)
 
 llm = ChatOpenAI(
     model="gpt-4.1-mini",
@@ -26,17 +29,55 @@ def run_planner_agent(business_context: str, ops_insights: str, weather_risk: Di
         weather_risk=weather_risk
     )).content
 
+def run_impact_agent(scenario_label: str, baseline_kpis: Dict[str, Any],
+                     scenario_kpis: Dict[str, Any]) -> str:
+    return llm.invoke(IMPACT_PROMPT.format_messages(
+        scenario_label=scenario_label,
+        baseline_kpis=baseline_kpis,
+        scenario_kpis=scenario_kpis,
+    )).content
+
+
+def run_contingency_agent(business_context: str, impact_analysis: str,
+                          scenario_kpis: Dict[str, Any],
+                          audit_feedback: str = "") -> str:
+    return llm.invoke(CONTINGENCY_PROMPT.format_messages(
+        business_context=business_context,
+        impact_analysis=impact_analysis,
+        scenario_kpis=scenario_kpis,
+        audit_feedback=audit_feedback or "(none)",
+    )).content
+
+
+def run_audit_agent(business_context: str, contingency_plan: str,
+                    scenario_kpis: Dict[str, Any]) -> tuple[str, bool]:
+    text = llm.invoke(AUDIT_PROMPT.format_messages(
+        business_context=business_context,
+        contingency_plan=contingency_plan,
+        scenario_kpis=scenario_kpis,
+    )).content
+    last = text.strip().splitlines()[-1].lower() if text.strip() else ""
+    compliant = "compliant: yes" in last
+    return text, compliant
+
+
 def run_report_agent(
+    scenario_label: str,
     business_context: str,
-    kpis: Dict[str, Any],
-    anomaly_highlights: str,
-    weather_risk: Dict[str, Any],
-    dispatch_plan: str,
+    baseline_kpis: Dict[str, Any],
+    scenario_kpis: Dict[str, Any],
+    excluded_md: str,
+    impact_analysis: str,
+    contingency_plan: str,
+    audit_result: str,
 ) -> str:
     return llm.invoke(REPORT_PROMPT.format_messages(
+        scenario_label=scenario_label,
         business_context=business_context,
-        kpis=kpis,
-        anomaly_highlights=anomaly_highlights,
-        weather_risk=weather_risk,
-        dispatch_plan=dispatch_plan
+        baseline_kpis=baseline_kpis,
+        scenario_kpis=scenario_kpis,
+        excluded_md=excluded_md,
+        impact_analysis=impact_analysis,
+        contingency_plan=contingency_plan,
+        audit_result=audit_result,
     )).content
