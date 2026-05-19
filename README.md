@@ -30,10 +30,10 @@ executive-ready contingency plan.
         ├── graph.py              ← LangGraph flow (cyclic audit loop)
         ├── state.py  prompts.py  agents.py
         ├── main.py               ← CLI runner
-        ├── streamlit_app.py      ← minimalist web UI
+        ├── web/                  ← FastAPI server + clean HTML/CSS/JS UI
         ├── tools/                ← kpi_engine, scenario_engine, reconciliation,
         │                            pdf/weather/email tools
-        └── viz/cowork_trace.py   ← live agent hand-off streaming
+        └── viz/cowork_trace.py   ← agent hand-off labels
 ```
 
 ## The multi-agent flow
@@ -81,11 +81,14 @@ cp .env.example .env          # add OPENAI_API_KEY for live LLM runs
 **Web UI (recommended):**
 ```bash
 cd app
-streamlit run src/streamlit_app.py
+uvicorn web.server:app --app-dir src --port 8000
+# then open http://localhost:8000
 ```
-Build a scenario in the sidebar → **Run simulation** → watch the agents hand
-work to each other live, then read the baseline-vs-scenario KPIs and the
-executive report. Tick **Offline mode** to run with no API key.
+A clean clinical-style single-page app: build a scenario in the left panel →
+**Run simulation** → watch the agent-cowork flow animate the information
+hand-off (and the audit loop firing), then read the baseline-vs-scenario KPIs
+and the executive report. Runs **offline/deterministic** automatically when no
+`OPENAI_API_KEY` is set; set the key for live LLM narration.
 
 **Command line (reproducible, for graders):**
 ```bash

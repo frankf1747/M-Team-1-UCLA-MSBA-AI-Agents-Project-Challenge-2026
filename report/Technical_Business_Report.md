@@ -155,7 +155,7 @@ only ever sees the corrected plan.
 ```bash
 cd app && pip install -r requirements.txt
 python -m src.main --preset demand_spike_20 --no-llm   # deterministic
-streamlit run src/streamlit_app.py                     # interactive
+uvicorn web.server:app --app-dir src --port 8000       # interactive web UI
 python -m pytest tests/ -q
 ```
 

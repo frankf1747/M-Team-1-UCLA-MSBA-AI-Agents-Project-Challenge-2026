@@ -123,6 +123,13 @@ Created in `app/data-augmented/`:
 - `scenario_presets.json` — the 3 PDF scenarios as parameterized presets.
 All augmentation rationale documented in `report/Technical_Business_Report.md`.
 
+> **Addendum (2026-05-19):** Per user request the UI was changed from Streamlit
+> to a **FastAPI server + custom HTML/CSS/JS** single-page app
+> (`src/web/`), clean clinical-medical style. The functional design below
+> (scenario builder, KPI comparison, agent-cowork hand-off view) is unchanged;
+> only the delivery layer differs. `streamlit`/`matplotlib` replaced by
+> `fastapi`/`uvicorn` in requirements.
+
 ## 6. Minimalist UI (`streamlit_app.py`)
 
 - **Sidebar — Scenario Builder:** demand-spike slider (%), corridor/DC closure dropdown,

@@ -11,8 +11,8 @@ cp .env.example .env
 # offline deterministic run (no API key)
 python -m src.main --preset corridor_closure --no-llm
 
-# web UI
-streamlit run src/streamlit_app.py
+# web UI (open http://localhost:8000)
+uvicorn web.server:app --app-dir src --port 8000
 
 # tests
 python -m pytest tests/ -q
