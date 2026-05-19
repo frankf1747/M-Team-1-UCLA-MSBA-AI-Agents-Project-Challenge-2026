@@ -1,0 +1,3 @@
+corridor_id,corridor_name,sla_tier,max_transit_hours,hospital_priority,notes
+C1_I95_NJ_BOS,NJ -> Boston (I-95),1,6,High,Tier 1 life-critical corridor; oncology + cold-chain heavy
+C2_NJ_PHL,NJ -> Philadelphia,2,12,Medium,Tier 2 standard specialty corridor

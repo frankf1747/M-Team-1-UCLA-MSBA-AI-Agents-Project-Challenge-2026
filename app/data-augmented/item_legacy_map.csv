@@ -1,0 +1,5 @@
+legacy_item_id,canonical_item_id,rule,rationale
+10020,RMD-100,LEGACY_ID_MAP,Vendor legacy ID for Remdesivir 100mg
+20021,RMD-200,LEGACY_ID_MAP,Old system used 200xx for strength variants
+1070,ALB-INH,LEGACY_ID_MAP,Truncated ID found in older CSV exports
+99999,EXP-ONC-CT,SPECIAL_CASE,Clinical trial placeholder ID; requires strict cold chain

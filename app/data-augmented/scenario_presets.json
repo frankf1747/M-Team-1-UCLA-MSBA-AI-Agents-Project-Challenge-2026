@@ -1,0 +1,52 @@
+{
+  "baseline": {
+    "label": "Baseline (no disruption)",
+    "description": "Unmodified 48h planning window.",
+    "demand_spike_pct": 0,
+    "closed_corridors": [],
+    "driver": null,
+    "truck_standard": null,
+    "truck_temp_controlled": null,
+    "weather_override": {}
+  },
+  "demand_spike_20": {
+    "label": "Demand spike +20%",
+    "description": "Sudden 20% increase in shipment volume across all corridors.",
+    "demand_spike_pct": 20,
+    "closed_corridors": [],
+    "driver": null,
+    "truck_standard": null,
+    "truck_temp_controlled": null,
+    "weather_override": {}
+  },
+  "corridor_closure": {
+    "label": "Warehouse / corridor closure (C2 Philadelphia)",
+    "description": "C2_NJ_PHL corridor closed; volume cannot dispatch on that lane.",
+    "demand_spike_pct": 0,
+    "closed_corridors": ["C2_NJ_PHL"],
+    "driver": null,
+    "truck_standard": null,
+    "truck_temp_controlled": null,
+    "weather_override": {}
+  },
+  "driver_shortage": {
+    "label": "Driver + reefer shortage",
+    "description": "Driver pool down to 3 and temperature-controlled trucks down to 1.",
+    "demand_spike_pct": 0,
+    "closed_corridors": [],
+    "driver": 3,
+    "truck_standard": null,
+    "truck_temp_controlled": 1,
+    "weather_override": {}
+  },
+  "storm_i95": {
+    "label": "Weather risk surge on I-95",
+    "description": "Forced weather risk score 3 on the C1 I-95 corridor (storm).",
+    "demand_spike_pct": 0,
+    "closed_corridors": [],
+    "driver": null,
+    "truck_standard": null,
+    "truck_temp_controlled": null,
+    "weather_override": {"C1_I95_NJ_BOS": 3}
+  }
+}

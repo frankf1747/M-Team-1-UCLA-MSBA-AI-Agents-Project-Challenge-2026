@@ -1,0 +1,12 @@
+canonical_item_id,item_id,canonical_item_name,medicine_type,temp_control,product_class
+RMD-100,10021,Remdesivir 100mg,Antiviral,Cold (2-8C),Antiviral
+RMD-200,10021,Remdesivir 200mg,Antiviral,Cold (2-8C),Antiviral
+INS-LIS,10022,Insulin Lispro,Hormone,Cold (2-8C),Endocrine
+PMB-KEY,10035,Pembrolizumab,Monoclonal Antibody,Cold (2-8C),Oncology Biologic
+EPI-AI,10040,Epinephrine Auto-Injector,Emergency Drug,Room Temp (20-25C),Emergency
+HEP-SOD,10050,Heparin Sodium,Anticoagulant,Room Temp (20-25C),Anticoagulant
+MOR-SUL,10060,Morphine Sulfate,Opioid Analgesic,Controlled Storage,Controlled
+ALB-INH,10070,Albuterol Inhaler,Bronchodilator,Room Temp (20-25C),Respiratory
+EXP-ONC-CT,99999,Experimental Oncology Drug (Clinical Trial),Clinical Trial Drug,Strict Cold Chain (-20C),Clinical Trial
+LEV-INH,10071,Levalbuterol Inhaler,Bronchodilator,Room Temp (20-25C),Respiratory
+INS-ASP,10023,Insulin Aspart,Hormone,Cold (2-8C),Endocrine

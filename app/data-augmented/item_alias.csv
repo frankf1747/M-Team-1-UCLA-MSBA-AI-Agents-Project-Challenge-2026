@@ -1,0 +1,8 @@
+alias_name,canonical_item_id,confidence_tier,notes
+Remdesivir 100 mg,RMD-100,ALIAS_MATCH,Space variant
+Remdesivir 200 mg,RMD-200,ALIAS_MATCH,Space variant
+Pembrolizumab (Keytruda),PMB-KEY,ALIAS_MATCH,Brand in parentheses
+EpiPen Auto Injector,EPI-AI,ALIAS_MATCH,Common brand phrasing
+Heparin Na,HEP-SOD,ALIAS_MATCH,Abbreviation
+Morphine Sulphate,MOR-SUL,ALIAS_MATCH,US/UK spelling
+Albuterol Inhaler 90mcg,ALB-INH,ALIAS_MATCH,Dose suffix ignored for inhaler class
