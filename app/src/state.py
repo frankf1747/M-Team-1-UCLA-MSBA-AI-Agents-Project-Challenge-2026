@@ -34,3 +34,8 @@ class AppState(TypedDict, total=False):
 
     # UI agent-cowork trace
     cowork_trace: List[Dict[str, Any]]
+
+    # internal pass-through (not for display)
+    _valid_units: List[Dict[str, Any]]
+    _pool: Dict[str, Any]
+    _spec: Dict[str, Any]
