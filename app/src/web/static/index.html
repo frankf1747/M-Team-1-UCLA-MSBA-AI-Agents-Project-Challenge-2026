@@ -29,6 +29,10 @@
   .btn-export:hover{background:var(--accent-soft)}
   label{display:block;font-size:12px;color:var(--muted);margin:14px 0 5px}
   label:first-of-type{margin-top:0}
+  .hint{display:inline-block;width:14px;height:14px;line-height:14px;text-align:center;
+        border-radius:50%;font-size:10px;color:var(--muted);border:1px solid var(--line);
+        cursor:help;margin-left:4px;font-style:normal;user-select:none}
+  .hint:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
   input[type=range]{width:100%}
   select,input[type=number]{width:100%;padding:8px 10px;border:1px solid var(--line);
         border-radius:7px;font-size:13px;background:#fff;color:var(--ink)}
@@ -91,30 +95,39 @@
 <div class="wrap">
   <div class="card">
     <h2>Scenario builder</h2>
-    <label>Demand spike <span class="rangeval" id="demandv">0%</span></label>
+    <label>Demand spike
+      <span class="hint" title="Inflates shipment volume by this %. e.g. 35% = 35% more units to move in the 48h window — stress-tests fleet capacity.">ⓘ</span>
+      <span class="rangeval" id="demandv">0%</span></label>
     <input type="range" id="demand" min="0" max="100" step="5" value="0">
 
-    <label>Close a corridor / warehouse</label>
+    <label>Close a corridor / warehouse
+      <span class="hint" title="Shuts that lane: its shipments can't dispatch and become stranded (penalized). C1 = Tier-1 Boston (6h SLA), C2 = Tier-2 Philadelphia (12h).">ⓘ</span></label>
     <select id="closure">
       <option value="">(none)</option>
       <option value="C1_I95_NJ_BOS">C1 — NJ → Boston (I-95)</option>
       <option value="C2_NJ_PHL">C2 — NJ → Philadelphia</option>
     </select>
 
-    <label>Drivers / day</label>
+    <label>Drivers / day
+      <span class="hint" title="Shared driver pool per day. Each truck needs one driver — too few drivers strands units even if trucks are available.">ⓘ</span></label>
     <input type="number" id="driver" value="6" min="0" max="20">
-    <label>Standard trucks / day</label>
+    <label>Standard trucks / day
+      <span class="hint" title="Room-temperature truck fleet per day. Capacity ~10 units each (+10% packing buffer).">ⓘ</span></label>
     <input type="number" id="std" value="4" min="0" max="20">
-    <label>Temp-controlled trucks / day</label>
+    <label>Temp-controlled trucks / day
+      <span class="hint" title="Reefer fleet for cold-chain medicine (e.g. insulin, biologics). Usually the binding constraint — lower it to simulate a reefer shortage.">ⓘ</span></label>
     <input type="number" id="reefer" value="2" min="0" max="20">
 
-    <label>Weather override — corridor</label>
+    <label>Weather override — corridor
+      <span class="hint" title="Pick a corridor to force a weather risk on, or (none) for normal forecast logic.">ⓘ</span></label>
     <select id="wxc">
       <option value="">(none)</option>
       <option value="C1_I95_NJ_BOS">C1 — I-95</option>
       <option value="C2_NJ_PHL">C2 — Philadelphia</option>
     </select>
-    <label>Forced weather risk score <span class="rangeval" id="wxv">0</span></label>
+    <label>Forced weather risk score
+      <span class="hint" title="Severity 0–3 for the chosen corridor: 0 none · 1 = +10% travel buffer · 2 = +25% · 3 = +40% + escalation. Higher = less effective truck capacity on that lane.">ⓘ</span>
+      <span class="rangeval" id="wxv">0</span></label>
     <input type="range" id="wxs" min="0" max="3" step="1" value="0">
 
     <button id="run">Run simulation</button>
