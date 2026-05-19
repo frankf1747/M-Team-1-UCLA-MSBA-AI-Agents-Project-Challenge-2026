@@ -1,12 +1,21 @@
-# SeeWeeS — What-if Scenario Simulation (UCLA MSBA AI Agents Challenge 2026)
+# SeeWeeS Scenario Simulation (UCLA MSBA AI Agents Challenge 2026)
 
-**Focus #2: "What-if" Scenario Simulation.**
+**Core Focuses: #2 What-if Scenario Simulation + #1 Self-Correcting Compliance Audit.**
 This project turns the linear SeeWeeS Ops Reporting Agent into a **multi-agent
-what-if decision sandbox**. A user specifies hypothetical disruptions (demand
-spike, warehouse/corridor closure, driver/truck shortage, weather surge); the
-system simulates the impact on KPIs using the SeeWeeS playbook's own capacity
-and penalty models, then a self-correcting agent loop produces an
-executive-ready contingency plan.
+decision sandbox** that combines two complementary capabilities:
+
+- **#2 — What-if Scenario Simulation.** A user specifies hypothetical disruptions
+  (demand spike, warehouse / corridor closure, driver / truck shortage, weather
+  surge); deterministic engines simulate the impact on KPIs using the SeeWeeS
+  playbook's own capacity and penalty models.
+- **#1 — Self-Correcting Compliance Audit.** Before any plan reaches leadership,
+  a compliance audit agent reviews it against the playbook (SLA tiers,
+  cold-chain rules, escalation triggers, resource ceilings). Non-compliant
+  plans are looped back to the planner with feedback until they are safe —
+  the system never publishes a plan it considers non-compliant.
+
+Together they produce an executive-ready contingency plan that is both
+quantitatively grounded and rule-checked.
 
 > Not just *"what is happening"* — also *"if it goes wrong, what do we do?"*
 
